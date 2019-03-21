@@ -13,8 +13,13 @@ TEST_CASE("can train a model from file data") {
     Model m;
     m.Train(model_filename);
 
-    REQUIRE(m.GetPriorProbability(3) != 0);
-    REQUIRE(m.GetConditionalProbs(7)[428] != 0);
+    for (int i = 0; i < Model::kNumClasses; i++) {
+        REQUIRE(m.GetPriorProbability(i) > 0);
+        
+        for (int j = 0; j < Model::kNumFeatures; j++) {
+            REQUIRE(m.GetConditionalProbs(i)[j] > 0);
+        }
+    }
 }
 
 TEST_CASE("can create model files") {
