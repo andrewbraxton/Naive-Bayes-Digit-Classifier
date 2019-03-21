@@ -15,7 +15,7 @@ class Model {
         void Train(std::string model_filename);
 
         double GetPriorProbability(int digit) const;
-        std::vector<std::vector<double>> GetConditionalProbs(int digit) const;
+        std::vector<double> GetConditionalProbs(int digit) const;
 
     private:
         std::vector<double> priorprobs_;

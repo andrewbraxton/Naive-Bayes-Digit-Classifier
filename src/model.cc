@@ -19,7 +19,7 @@ void Model::Train(std::string model_filename) {
     for (int i = 0; i < kNumClasses; i++) {
         double curr_priorprob;
         model_file >> curr_priorprob;
-        priorprobs_.push_back(curr_priorprob);
+        priorprobs_[i] = curr_priorprob;
 
         for (int j = 0; j < kNumFeatures; j++) {
             double curr_cndtlprob;
@@ -27,6 +27,14 @@ void Model::Train(std::string model_filename) {
             cndtlprobs_[i].push_back(curr_cndtlprob);
         }
     }
+}
+
+ double Model::GetPriorProbability(int digit) const {
+     return priorprobs_[digit];
+ }
+
+std::vector<double> Model::GetConditionalProbs(int digit) const {
+    return cndtlprobs_[digit];
 }
 
 void CreateModelFile(std::string images_filename, std::string labels_filename,

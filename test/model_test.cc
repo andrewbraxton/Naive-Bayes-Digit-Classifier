@@ -4,9 +4,18 @@
 #include "catch.hpp"
 #include "model.h"
 
-// TEST_CASE("can train a model from file data") {
-    
-// }
+TEST_CASE("can train a model from file data") {
+    std::string images_filename ("../digitdata/trainingimages");
+    std::string labels_filename ("../digitdata/traininglabels");
+    std::string model_filename ("modeltest.txt");
+    CreateModelFile(images_filename, labels_filename, model_filename);
+
+    Model m;
+    m.Train(model_filename);
+
+    REQUIRE(m.GetPriorProbability(3) != 0);
+    REQUIRE(m.GetConditionalProbs(7)[428] != 0);
+}
 
 TEST_CASE("can create model files") {
     std::string images_filename ("../digitdata/trainingimages");
