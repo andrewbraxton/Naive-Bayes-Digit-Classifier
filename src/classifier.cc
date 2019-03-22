@@ -5,10 +5,14 @@
 
 Classifier::Classifier(Model model) {
     model_ = model;
+    for (int i = 0; i < model_.GetNumClasses(); i++) {
+        std::vector<double> tmp (model_.GetNumClasses());
+        confusionmatrix_.push_back(tmp);
+    }
 }
 
-void Classifier::Classify(std::string testimgs_src) {
-    std::ifstream testimgs (testimgs_src);
+void Classifier::Classify(std::string imgs_src) {
+    std::ifstream testimgs (imgs_src);
     if (!testimgs.is_open()) {
         return;
     }
@@ -25,8 +29,43 @@ void Classifier::Classify(std::string testimgs_src) {
     testimgs.close();
 }
 
-std::vector<int> Classifier::GetClassifications() {
+void Classifier::Evaluate(std::string labels_src) {
+    std::ifstream testlabels (labels_src);
+    if (!testlabels.is_open()) {
+        return;
+    }
+
+    std::vector<int> labels = GetLabels(testlabels);
+    testlabels.close();
+
+    for (int i = 0; i < labels.size(); i++)  {
+        int prediction = classifications_[i];
+        int actual = labels[i];
+        confusionmatrix_[prediction][actual]++;
+    }
+
+    std::vector<int> rowsums (model_.GetNumClasses());
+    for (int i = 0; i < confusionmatrix_.size(); i++) {
+        int sum = 0;
+        for (int j = 0; j < confusionmatrix_[i].size(); j++) {
+            sum += confusionmatrix_[i][j];
+        }
+        rowsums[i] = sum;
+    }
+
+    for (int i = 0; i < confusionmatrix_.size(); i++) {
+        for (int j = 0; j < confusionmatrix_[i].size(); j++) {
+            confusionmatrix_[i][j] /= (double)rowsums[i];
+        }
+    }
+}
+
+std::vector<int> Classifier::GetClassifications() const {
     return classifications_;
+}
+
+std::vector<std::vector<double>> Classifier::GetConfusionMatrix() const {
+    return confusionmatrix_;
 }
 
 std::vector<double> Classifier::GetLogPriorProbs() {
@@ -66,12 +105,21 @@ std::vector<double> Classifier::AddLogCndtlProbs(std::vector<double> logprobs,
 int Classifier::MakePrediction(std::vector<double> logsums) {
     int prediction = 0;
     int highestprob = logsums[0];
-    for (int p = 0; p < logsums.size(); p++) {
-        if (logsums[p] > highestprob) {
-            highestprob = logsums[p];
-            prediction = p;
+    for (int i = 0; i < logsums.size(); i++) {
+        if (logsums[i] > highestprob) {
+            highestprob = logsums[i];
+            prediction = i;
         }
     }
 
     return prediction;
+}
+
+std::vector<int> Classifier::GetLabels(std::ifstream& testlabels) {
+    std::vector<int> labels;
+    std::string line;
+    while (std::getline(testlabels, line)) {
+        labels.push_back(std::stoi(line));
+    }
+    return labels;
 }
