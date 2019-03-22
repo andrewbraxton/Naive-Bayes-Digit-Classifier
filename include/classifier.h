@@ -4,14 +4,25 @@
 
 class Classifier {
     public:
+        static const char kNewLineChar = '\n';
+        static const char kWhitePixel = ' ';
+
+
         Classifier(Model model);
 
-        std::vector<int> Classify(std::string testimgs_src);
+        void Classify(std::string testimgs_src);
 
         void Evaluate(std::string testlabels_src) const;
 
+        std::vector<int> GetClassifications();
+
 
     private:
-        Model model_;
+        std::vector<double> GetLogPriorProbs();
+        std::vector<double> AddLogCndtlProbs(std::vector<double> logprobs,
+                                             std::ifstream& testimgs);
+        int MakePrediction(std::vector<double> logsums);
 
+        Model model_;
+        std::vector<int> classifications_;
 };

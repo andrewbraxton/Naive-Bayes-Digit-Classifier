@@ -19,8 +19,8 @@ void Model::Train(std::string model_src) {
      return priorprobs_[digit];
  }
 
-std::vector<double> Model::GetCndtlProbs(int digit) const {
-    return cndtlprobs_[digit];
+std::vector<double> Model::GetBlackCndtlProbs(int digit) const {
+    return blackcndtlprobs_[digit];
 }
 
 int Model::GetNumClasses() const {
@@ -28,7 +28,7 @@ int Model::GetNumClasses() const {
 }
 
 int Model::GetImgSize() const {
-    return cndtlprobs_[0].size();
+    return blackcndtlprobs_[0].size();
 }
 
 void Model::StorePriorProbs(std::ifstream& model_file) {
@@ -61,7 +61,7 @@ void Model::StoreCndtlProbs(std::ifstream& model_file) {
         }
         // condition necessary due to how eof() functions
         if (!currclass_probs.empty()) {
-            cndtlprobs_.push_back(currclass_probs);
+            blackcndtlprobs_.push_back(currclass_probs);
         }
     } while (!model_file.eof());
 }

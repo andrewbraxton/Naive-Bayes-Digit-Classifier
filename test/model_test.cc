@@ -16,7 +16,7 @@ TEST_CASE("can train models from files") {
     SECTION("conditional probabilities are stored") {
         for (int i = 0; i <= 9; i++) {
             for (int j = 0; j < 784; j++) {
-                REQUIRE(m.GetCndtlProbs(i)[j] > 0);
+                REQUIRE(m.GetBlackCndtlProbs(i)[j] > 0);
             }
         }
     }

@@ -11,7 +11,7 @@ class Model {
         void Train(std::string model_src);
 
         double GetPriorProbability(int digit) const;
-        std::vector<double> GetCndtlProbs(int digit) const;
+        std::vector<double> GetBlackCndtlProbs(int digit) const;
 
         int GetNumClasses() const;
         int GetImgSize() const;
@@ -21,5 +21,5 @@ class Model {
         void StoreCndtlProbs(std::ifstream& model_file);
 
         std::vector<double> priorprobs_;
-        std::vector<std::vector<double>> cndtlprobs_;
+        std::vector<std::vector<double>> blackcndtlprobs_;
 };
