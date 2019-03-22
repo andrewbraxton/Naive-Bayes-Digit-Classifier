@@ -4,7 +4,6 @@
 #include "catch.hpp"
 #include "model.h"
 
-
 TEST_CASE("can train models from files") {
     Model m;
     m.Train("modeltest.txt");

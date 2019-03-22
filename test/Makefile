@@ -11,7 +11,12 @@ tests : $(BUILDDIR)/tests
 
 filetest : $(BUILDDIR)/filetest
 
+modeltest : $(BUILDDIR)/modeltest
+
 $(BUILDDIR)/filetest : $(BUILDDIR)/tests_main.o $(BUILDDIR)/modelfilemaker_test.o $(BUILDDIR)/modelfilemaker.o
+	$(LD) $(LDFLAGS) $^ -o $@
+
+$(BUILDDIR)/modeltest : $(BUILDDIR)/tests_main.o $(BUILDDIR)/model_test.o $(BUILDDIR)/model.o
 	$(LD) $(LDFLAGS) $^ -o $@
 
 $(BUILDDIR)/tests : $(BUILDDIR)/tests_main.o $(BUILDDIR)/model_test.o $(BUILDDIR)/model.o $(BUILDDIR)/modelfilemaker_test.o $(BUILDDIR)/modelfilemaker.o
