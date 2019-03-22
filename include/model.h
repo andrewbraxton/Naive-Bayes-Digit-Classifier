@@ -13,6 +13,9 @@ class Model {
         double GetPriorProbability(int digit) const;
         std::vector<double> GetCndtlProbs(int digit) const;
 
+        int GetNumClasses() const;
+        int GetImgSize() const;
+
     private:
         void StorePriorProbs(std::ifstream& model_file);
         void StoreCndtlProbs(std::ifstream& model_file);
@@ -20,6 +23,3 @@ class Model {
         std::vector<double> priorprobs_;
         std::vector<std::vector<double>> cndtlprobs_;
 };
-
-std::istream& operator>>(std::istream& stream, Model& model);
-

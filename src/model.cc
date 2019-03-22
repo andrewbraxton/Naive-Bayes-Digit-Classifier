@@ -23,6 +23,14 @@ std::vector<double> Model::GetCndtlProbs(int digit) const {
     return cndtlprobs_[digit];
 }
 
+int Model::GetNumClasses() const {
+    return priorprobs_.size();
+}
+
+int Model::GetImgSize() const {
+    return cndtlprobs_[0].size();
+}
+
 void Model::StorePriorProbs(std::ifstream& model_file) {
     std::string line;
     while(std::getline(model_file, line)) {
