@@ -6,13 +6,12 @@
 class ModelFileMaker {
 
     public:
-        static const int kNumClasses = 10;
-        static const int kNumFeatures = 784;
-        static const int kSqrtNumFeatures = 28;
         static const char kSeparatingChar = '$';
+        static const char kNewLineChar = '\n';
+        static const char kWhitePixel = ' ';
 
-        ModelFileMaker(std::string images_filename,
-                       std::string labels_filename);
+        ModelFileMaker(std::string imgs_src, std::string labels_src,
+                       int img_size, int num_classes);
 
         void MakeModelFile(std::string output_filename);
 
@@ -21,8 +20,10 @@ class ModelFileMaker {
         void OutputPriorProbs(std::ofstream& output_file);
         void OutputCndtlProbs(std::ofstream& output_file);
 
-        std::string imagesfn_;
-        std::string labelsfn_;
+        std::string imgsrc_;
+        std::string labelsrc_;
+        int imgsize_;
+        int numclasses_;
 
         int numimages_;
         std::vector<int> numimagesperclass_;

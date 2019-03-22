@@ -8,7 +8,7 @@ class Model {
     public:
         Model();
 
-        void Train(std::string model_filename);
+        void Train(std::string model_src);
 
         double GetPriorProbability(int digit) const;
         std::vector<double> GetCndtlProbs(int digit) const;

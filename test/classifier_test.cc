@@ -6,7 +6,7 @@
 
 TEST_CASE("can classify images") {
     Model m;
-    m.Train("modeltest.txt");
+    m.Train("../models/modeltest.txt");
     Classifier c (m);
     std::vector<int> classifications;
     classifications = c.Classify("../digitdata/testimages");

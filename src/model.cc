@@ -4,8 +4,8 @@
 
 Model::Model() {}
 
-void Model::Train(std::string model_filename) {
-    std::ifstream model_file ("../models/" + model_filename);
+void Model::Train(std::string model_src) {
+    std::ifstream model_file (model_src);
 
     if (!model_file.is_open()) {
         return;

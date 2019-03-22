@@ -2,15 +2,17 @@
 
 #include "modelfilemaker.h"
 
-ModelFileMaker::ModelFileMaker(std::string images_filename,
-                               std::string labels_filename) {
-    imagesfn_ = images_filename;
-    labelsfn_ = labels_filename;
+ModelFileMaker::ModelFileMaker(std::string imgs_src, std::string labels_src,
+                               int img_size, int num_classes) {
+    imgsrc_ = imgs_src;
+    labelsrc_ = labels_src;
+    imgsize_ = img_size;
+    numclasses_ = num_classes;
 
     numimages_ = 0;
-    numimagesperclass_.resize(kNumClasses);
-    for (int i = 0; i < kNumClasses; i++) {
-        std::vector<int> tmp (kNumFeatures);
+    numimagesperclass_.resize(numclasses_);
+    for (int i = 0; i < numclasses_; i++) {
+        std::vector<int> tmp (imgsize_);
         numblackperclass_.push_back(tmp);
     }
 }
@@ -18,15 +20,15 @@ ModelFileMaker::ModelFileMaker(std::string images_filename,
 void ModelFileMaker::MakeModelFile(std::string output_filename) {
     ReadTrainingData();
 
-    std::ofstream output_file ("../models/" + output_filename);
+    std::ofstream output_file (output_filename);
     OutputPriorProbs(output_file);
     OutputCndtlProbs(output_file);
     output_file.close();
 }
 
 void ModelFileMaker::ReadTrainingData() {
-    std::ifstream images_file (imagesfn_);
-    std::ifstream labels_file (labelsfn_);
+    std::ifstream images_file (imgsrc_);
+    std::ifstream labels_file (labelsrc_);
     
     std::string line;
     while(std::getline(labels_file, line)) {
@@ -35,15 +37,15 @@ void ModelFileMaker::ReadTrainingData() {
         int curr_label = std::stoi(line);
         numimagesperclass_[curr_label]++;
 
-        for (int i = 0; i < kNumFeatures; i++) {
+        for (int i = 0; i < imgsize_; i++) {
             char curr_pixel = images_file.get();
-            if (curr_pixel != ' ') {
-                numblackperclass_[curr_label][i]++;
+
+            if (curr_pixel == kNewLineChar) {
+                curr_pixel = images_file.get();
             }
 
-            // skip newline characters
-            if (i % kSqrtNumFeatures == 0) {
-                images_file.get();
+            if (curr_pixel != kWhitePixel) {
+                numblackperclass_[curr_label][i]++;
             }
         }
     }
@@ -53,7 +55,7 @@ void ModelFileMaker::ReadTrainingData() {
 }
 
 void ModelFileMaker::OutputPriorProbs(std::ofstream& output_file) {
-    for (int i = 0; i < kNumClasses; i++) {
+    for (int i = 0; i < numclasses_; i++) {
         double priorprob = (double)numimagesperclass_[i] / numimages_;
         output_file << priorprob << std::endl;
     }
@@ -62,8 +64,8 @@ void ModelFileMaker::OutputPriorProbs(std::ofstream& output_file) {
 
 void ModelFileMaker::OutputCndtlProbs(std::ofstream& output_file) {
     double smoothingfactor = 0.5;
-    for (int i = 0; i < kNumClasses; i++) {
-        for (int j = 0; j < kNumFeatures; j++) {
+    for (int i = 0; i < numclasses_; i++) {
+        for (int j = 0; j < imgsize_; j++) {
             double smoothed_numer = smoothingfactor + numblackperclass_[i][j];
             double smoothed_denom = 2 * smoothingfactor + numimagesperclass_[i];
             double cndtlprob = smoothed_numer / smoothed_denom;
