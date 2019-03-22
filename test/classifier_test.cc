@@ -26,11 +26,11 @@ TEST_CASE("can evaluate classifications") {
     c.Evaluate("../digitdata/testlabels");
     std::vector<std::vector<double>> confusionmatrix = c.GetConfusionMatrix();
 
-    double epsilon = .0001;
+    double epsilon = .0001; // yay for floating point calculations
     double sum = 0;
-    for (int i = 0; i < confusionmatrix.size(); i++) {
+    for (size_t i = 0; i < confusionmatrix.size(); i++) {
         sum = 0;
-        for (int j = 0; j < confusionmatrix[i].size(); j++) {
+        for (size_t j = 0; j < confusionmatrix[i].size(); j++) {
             sum += confusionmatrix[i][j];
         }
         REQUIRE(abs(sum - 1) < epsilon);

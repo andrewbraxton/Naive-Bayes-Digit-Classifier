@@ -22,6 +22,8 @@ class Classifier {
         int MakePrediction(std::vector<double> logsums);
 
         std::vector<int> GetLabels(std::ifstream& testlabels);
+        void FillMatrixWithTotals(std::vector<int> correctlabels);
+        void ConvertMatrixTotalsToProbs();
 
         Model model_;
         std::vector<int> classifications_;
