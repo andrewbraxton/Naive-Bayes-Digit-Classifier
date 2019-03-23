@@ -4,6 +4,10 @@
 
 Model::Model() {}
 
+Model::Model(std::string model_src) {
+    Train(model_src);
+}
+
 void Model::Train(std::string model_src) {
     std::ifstream model_file (model_src);
 

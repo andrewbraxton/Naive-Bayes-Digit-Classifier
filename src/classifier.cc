@@ -1,4 +1,5 @@
 #include <fstream>
+#include <iomanip>
 #include <math.h>
 
 #include "classifier.h"
@@ -39,6 +40,30 @@ void Classifier::Evaluate(std::string labels_src) {
     FillMatrixWithTotals(correctlabels);
     ConvertMatrixTotalsToProbs(); 
     testlabels.close();
+}
+
+void Classifier::PrintConfusionMatrix(std::ostream& output_src) {
+    std::string header = "\nConfusion Matrix";
+    std::string horiz_divider = "  ---------------------------------------------------";
+    std::string vert_divider = "|";
+
+    output_src << header << std::endl << horiz_divider << std::endl;
+    
+    for (size_t i = 0; i < confusionmatrix_.size(); i++) {
+        output_src << i << ' ' << vert_divider;
+        for (size_t j = 0; j < confusionmatrix_[i].size(); j++) {
+            output_src << std::setprecision(2) << std::fixed;
+            output_src << confusionmatrix_[i][j] << vert_divider;
+        }
+        output_src << std::endl << horiz_divider << std::endl;
+    }
+
+    output_src << " ";
+    for (int i = 0; i < model_.GetNumClasses(); i++) {
+        output_src << "    " << i;
+    }
+    output_src << std::endl;
+    
 }
 
 std::vector<int> Classifier::GetClassifications() const {

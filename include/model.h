@@ -7,6 +7,7 @@
 class Model {
     public:
         Model();
+        Model(std::string model_src);
 
         void Train(std::string model_src);
 

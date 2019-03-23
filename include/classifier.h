@@ -12,6 +12,8 @@ class Classifier {
         void Classify(std::string imgs_src);
         void Evaluate(std::string labels_src);
 
+        void PrintConfusionMatrix(std::ostream& output_src);
+
         std::vector<int> GetClassifications() const;
         std::vector<std::vector<double>> GetConfusionMatrix() const;
 
