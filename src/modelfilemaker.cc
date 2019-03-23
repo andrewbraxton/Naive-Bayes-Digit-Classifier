@@ -9,7 +9,8 @@ ModelFileMaker::ModelFileMaker(std::string imgs_src, std::string labels_src,
     imgsize_ = img_size;
     numclasses_ = num_classes;
 
-    numimages_ = 0;
+    // need to initialize the 2D vector in this way
+    // to be able to set elements through [][] notation
     numimagesperclass_.resize(numclasses_);
     for (int i = 0; i < numclasses_; i++) {
         std::vector<int> tmp (imgsize_);
@@ -17,10 +18,10 @@ ModelFileMaker::ModelFileMaker(std::string imgs_src, std::string labels_src,
     }
 }
 
-void ModelFileMaker::MakeModelFile(std::string output_filename) {
+void ModelFileMaker::MakeModelFile(std::string output_src) {
     ReadTrainingData();
 
-    std::ofstream output_file (output_filename);
+    std::ofstream output_file (output_src);
     OutputPriorProbs(output_file);
     OutputCndtlProbs(output_file);
     output_file.close();
@@ -33,23 +34,19 @@ void ModelFileMaker::ReadTrainingData() {
     std::string line;
     while(std::getline(labels_file, line)) {
         numimages_++;
-
         int curr_label = std::stoi(line);
         numimagesperclass_[curr_label]++;
 
         for (int i = 0; i < imgsize_; i++) {
             char curr_pixel = images_file.get();
-
             if (curr_pixel == kNewLineChar) {
                 curr_pixel = images_file.get();
             }
-
             if (curr_pixel != kWhitePixel) {
                 numblackperclass_[curr_label][i]++;
             }
         }
     }
-
     images_file.close();
     labels_file.close();
 }
@@ -63,6 +60,7 @@ void ModelFileMaker::OutputPriorProbs(std::ofstream& output_file) {
 }
 
 void ModelFileMaker::OutputCndtlProbs(std::ofstream& output_file) {
+    // can play around with Laplace smoothing factor and test resulting accuracy
     double smoothingfactor = 0.5;
     for (int i = 0; i < numclasses_; i++) {
         for (int j = 0; j < imgsize_; j++) {

@@ -37,20 +37,18 @@ void Classifier::Evaluate(std::string labels_src) {
     }
 
     std::vector<int> correctlabels = GetLabels(testlabels);
-
     CalcOverallAccuracy(correctlabels);
     FillMatrixWithTotals(correctlabels);
     ConvertMatrixTotalsToProbs(); 
     testlabels.close();
 }
 
-void Classifier::PrintConfusionMatrix(std::ostream& output_src) {
+void Classifier::PrintAccuracyStats(std::ostream& output_src) {
     std::string header = "\n  Confusion Matrix";
     std::string horiz_divider = "  ---------------------------------------------------";
     std::string vert_divider = "|";
 
     output_src << header << std::endl << horiz_divider << std::endl;
-    
     for (size_t i = 0; i < confusionmatrix_.size(); i++) {
         output_src << i << ' ' << vert_divider;
         for (size_t j = 0; j < confusionmatrix_[i].size(); j++) {
@@ -60,10 +58,12 @@ void Classifier::PrintConfusionMatrix(std::ostream& output_src) {
         output_src << std::endl << horiz_divider << std::endl;
     }
 
+    // print the labels under the bottom row
     output_src << " ";
     for (int i = 0; i < model_.GetNumClasses(); i++) {
         output_src << "    " << i;
     }
+
     output_src << std::endl << std::endl;
     output_src << "Overall accuracy was " << accuracy_ << '.' << std::endl;
 }
@@ -106,7 +106,6 @@ std::vector<double> Classifier::AddLogCndtlProbs(std::vector<double> logprobs,
             }
         }
     }
-
     return logprobs;
 }
 
@@ -119,7 +118,6 @@ int Classifier::MakePrediction(std::vector<double> logsums) {
             prediction = i;
         }
     }
-
     return prediction;
 }
 

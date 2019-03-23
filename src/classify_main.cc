@@ -3,6 +3,7 @@
 
 #include "classifier.h"
 
+// See README.md for usage instructions.
 int main(int argc, char* argv[]) {
     if (argc != 4) {
         std::cout << "Please provide the needed arguments";
@@ -17,6 +18,6 @@ int main(int argc, char* argv[]) {
     Classifier classifier (model);
     classifier.Classify(imgs_src);
     classifier.Evaluate(labels_src);
-    classifier.PrintConfusionMatrix(std::cout);
+    classifier.PrintAccuracyStats(std::cout);
     return 0;
 }

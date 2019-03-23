@@ -3,6 +3,7 @@
 
 #include "modelfilemaker.h"
 
+// See README.md for usage instructions.
 int main(int argc, char* argv[]) {
     if (argc != 6) {
         std::cout << "Please provide the needed arguments";
@@ -17,7 +18,6 @@ int main(int argc, char* argv[]) {
 
     ModelFileMaker modelmaker (imgs_src, labels_src, img_size, num_classes);
     modelmaker.MakeModelFile(output_src);
-    
-    std::cout << "Model file has been created";
+    std::cout << "Model file has been created" <<  std::endl;
     return 0;
 }

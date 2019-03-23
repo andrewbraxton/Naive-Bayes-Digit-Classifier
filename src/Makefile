@@ -33,5 +33,6 @@ $(BUILDDIR)/modelmaker_main : modelmaker_main.cc
 $(BUILDDIR)/classify_main : classify_main.cc
 	$(CXX) $(CXXFLAGS) $^ -o $@
 
+# delete everything in build/ except compiled Catch file
 clean :
 	find $(BUILDDIR)/* -not -name "tests_main.o" -delete
