@@ -24,10 +24,14 @@ class Classifier {
         int MakePrediction(std::vector<double> logsums);
 
         std::vector<int> GetLabels(std::ifstream& testlabels);
+
+        void CalcOverallAccuracy(std::vector<int> correctlabels);
+
         void FillMatrixWithTotals(std::vector<int> correctlabels);
         void ConvertMatrixTotalsToProbs();
 
         Model model_;
         std::vector<int> classifications_;
         std::vector<std::vector<double>> confusionmatrix_;
+        double accuracy_;
 };

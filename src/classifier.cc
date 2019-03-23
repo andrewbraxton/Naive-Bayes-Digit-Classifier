@@ -37,6 +37,8 @@ void Classifier::Evaluate(std::string labels_src) {
     }
 
     std::vector<int> correctlabels = GetLabels(testlabels);
+
+    CalcOverallAccuracy(correctlabels);
     FillMatrixWithTotals(correctlabels);
     ConvertMatrixTotalsToProbs(); 
     testlabels.close();
@@ -62,8 +64,8 @@ void Classifier::PrintConfusionMatrix(std::ostream& output_src) {
     for (int i = 0; i < model_.GetNumClasses(); i++) {
         output_src << "    " << i;
     }
-    output_src << std::endl;
-    
+    output_src << std::endl << std::endl;
+    output_src << "Overall accuracy was " << accuracy_ << '.' << std::endl;
 }
 
 std::vector<int> Classifier::GetClassifications() const {
@@ -128,6 +130,16 @@ std::vector<int> Classifier::GetLabels(std::ifstream& testlabels) {
         labels.push_back(std::stoi(line));
     }
     return labels;
+}
+
+void Classifier::CalcOverallAccuracy(std::vector<int> correctlabels) {
+    int numcorrect = 0;
+    for (size_t i = 0; i < correctlabels.size(); i++) {
+        if (classifications_[i] == correctlabels[i]) {
+            numcorrect++;
+        }
+    }
+    accuracy_ = (double)numcorrect / correctlabels.size();
 }
 
 void Classifier::FillMatrixWithTotals(std::vector<int> correctlabels) {
