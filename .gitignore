@@ -1,5 +1,6 @@
 digitdata/
-models/makertest.txt
+models/*
+!models/modeltest.txt
 .vscode
 
 # Created by https://www.gitignore.io/api/c++,xcode,visualstudio,openframeworks,visualstudiocode,openframeworks+visualstudio

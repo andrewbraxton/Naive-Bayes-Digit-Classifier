@@ -45,7 +45,7 @@ void Classifier::Evaluate(std::string labels_src) {
 }
 
 void Classifier::PrintConfusionMatrix(std::ostream& output_src) {
-    std::string header = "\nConfusion Matrix";
+    std::string header = "\n  Confusion Matrix";
     std::string horiz_divider = "  ---------------------------------------------------";
     std::string vert_divider = "|";
 
