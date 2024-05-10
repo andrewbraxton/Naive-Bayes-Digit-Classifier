@@ -1,9 +1,8 @@
 # NaiveBayes
 Simple Naive Bayes digit classifier.
 
-
 ## Usage instructions
-Compile the two executable files using the Makefile in the `src` directory.
+Compile the two executable files by running `make`.
 
 ### modelmaker
 This executable is used to read training data and generate a text file representing a model readable by a `Model` object. It works with any number of classes and training images of any size, as long as each image is the same size, images are encoded as black and white with a single whitespace character representing white, and images are laid out vertically with no space between them.
