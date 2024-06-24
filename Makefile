@@ -43,9 +43,13 @@ test: $(TEST)
 $(OBJ) $(BIN):
 	@mkdir $@
 
-$(OBJ)/%.o: | $(OBJ)
+$(OBJ)/%.o: src/%.cc | $(OBJ)
 	@echo 'Building $@...'
-	@$(CXX) $(CXXFLAGS) $(filter %/$*.cc,$(SRCS)) -o $@
+	@$(CXX) $(CXXFLAGS) $^ -o $@
+
+$(OBJ)/%.o: test/%.cc | $(OBJ)
+	@echo 'Building $@...'
+	@$(CXX) $(CXXFLAGS) $^ -o $@
 
 $(CLASSIFY): $(OBJ)/model.o $(OBJ)/classifier.o $(OBJ)/classify_main.o | $(BIN)
 	@echo 'Building $@...'
