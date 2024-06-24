@@ -1,6 +1,6 @@
-#include <fstream>
-
 #include "modelfilemaker.h"
+
+#include <fstream>
 
 ModelFileMaker::ModelFileMaker(std::string imgs_src, std::string labels_src,
                                int img_size, int num_classes) {
@@ -13,7 +13,7 @@ ModelFileMaker::ModelFileMaker(std::string imgs_src, std::string labels_src,
     // to be able to set elements through [][] notation
     numimagesperclass_.resize(numclasses_);
     for (int i = 0; i < numclasses_; i++) {
-        std::vector<int> tmp (imgsize_);
+        std::vector<int> tmp(imgsize_);
         numblackperclass_.push_back(tmp);
     }
 }
@@ -21,18 +21,18 @@ ModelFileMaker::ModelFileMaker(std::string imgs_src, std::string labels_src,
 void ModelFileMaker::MakeModelFile(std::string output_src) {
     ReadTrainingData();
 
-    std::ofstream output_file (output_src);
+    std::ofstream output_file(output_src);
     OutputPriorProbs(output_file);
     OutputCndtlProbs(output_file);
     output_file.close();
 }
 
 void ModelFileMaker::ReadTrainingData() {
-    std::ifstream images_file (imgsrc_);
-    std::ifstream labels_file (labelsrc_);
-    
+    std::ifstream images_file(imgsrc_);
+    std::ifstream labels_file(labelsrc_);
+
     std::string line;
-    while(std::getline(labels_file, line)) {
+    while (std::getline(labels_file, line)) {
         numimages_++;
         int curr_label = std::stoi(line);
         numimagesperclass_[curr_label]++;

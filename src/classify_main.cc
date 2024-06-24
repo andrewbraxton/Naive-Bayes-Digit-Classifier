@@ -14,8 +14,8 @@ int main(int argc, char* argv[]) {
     std::string imgs_src = argv[2];
     std::string labels_src = argv[3];
 
-    Model model (modelfile);
-    Classifier classifier (model);
+    Model model(modelfile);
+    Classifier classifier(model);
     classifier.Classify(imgs_src);
     classifier.Evaluate(labels_src);
     classifier.PrintAccuracyStats(std::cout);

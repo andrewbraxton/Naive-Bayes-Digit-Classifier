@@ -16,8 +16,8 @@ int main(int argc, char* argv[]) {
     int num_classes = std::stoi(std::string(argv[4]));
     std::string output_src = argv[5];
 
-    ModelFileMaker modelmaker (imgs_src, labels_src, img_size, num_classes);
+    ModelFileMaker modelmaker(imgs_src, labels_src, img_size, num_classes);
     modelmaker.MakeModelFile(output_src);
-    std::cout << "Model file has been created" <<  std::endl;
+    std::cout << "Model file has been created" << std::endl;
     return 0;
 }

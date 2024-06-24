@@ -1,8 +1,9 @@
-#include <string>
+#include "model.h"
+
 #include <fstream>
+#include <string>
 
 #include "catch.hpp"
-#include "model.h"
 
 TEST_CASE("can train models from files") {
     Model m;

@@ -1,19 +1,20 @@
-#include <fstream>
-#include <iomanip>
+#include "classifier.h"
+
 #include <math.h>
 
-#include "classifier.h"
+#include <fstream>
+#include <iomanip>
 
 Classifier::Classifier(Model model) {
     model_ = model;
     for (int i = 0; i < model_.GetNumClasses(); i++) {
-        std::vector<double> tmp (model_.GetNumClasses());
+        std::vector<double> tmp(model_.GetNumClasses());
         confusionmatrix_.push_back(tmp);
     }
 }
 
 void Classifier::Classify(std::string imgs_src) {
-    std::ifstream testimgs (imgs_src);
+    std::ifstream testimgs(imgs_src);
     if (!testimgs.is_open()) {
         return;
     }
@@ -24,14 +25,14 @@ void Classifier::Classify(std::string imgs_src) {
         int prediction = MakePrediction(logsums);
         classifications_.push_back(prediction);
     }
-    
+
     // delete the nonsense prediction produced due to how eof() works
     classifications_.pop_back();
     testimgs.close();
 }
 
 void Classifier::Evaluate(std::string labels_src) {
-    std::ifstream testlabels (labels_src);
+    std::ifstream testlabels(labels_src);
     if (!testlabels.is_open()) {
         return;
     }
@@ -39,13 +40,14 @@ void Classifier::Evaluate(std::string labels_src) {
     std::vector<int> correctlabels = GetLabels(testlabels);
     CalcOverallAccuracy(correctlabels);
     FillMatrixWithTotals(correctlabels);
-    ConvertMatrixTotalsToProbs(); 
+    ConvertMatrixTotalsToProbs();
     testlabels.close();
 }
 
 void Classifier::PrintAccuracyStats(std::ostream& output_src) {
     std::string header = "\n  Confusion Matrix";
-    std::string horiz_divider = "  ---------------------------------------------------";
+    std::string horiz_divider =
+        "  ---------------------------------------------------";
     std::string vert_divider = "|";
 
     output_src << header << std::endl << horiz_divider << std::endl;
@@ -77,9 +79,9 @@ std::vector<std::vector<double>> Classifier::GetConfusionMatrix() const {
 }
 
 std::vector<double> Classifier::GetLogPriorProbs() {
-    std::vector<double> logprobs (model_.GetNumClasses());
+    std::vector<double> logprobs(model_.GetNumClasses());
     for (size_t i = 0; i < logprobs.size(); i++) {
-            logprobs[i] = log(model_.GetPriorProbability(i));
+        logprobs[i] = log(model_.GetPriorProbability(i));
     }
 
     return logprobs;
@@ -141,7 +143,7 @@ void Classifier::CalcOverallAccuracy(std::vector<int> correctlabels) {
 }
 
 void Classifier::FillMatrixWithTotals(std::vector<int> correctlabels) {
-    for (size_t i = 0; i < correctlabels.size(); i++)  {
+    for (size_t i = 0; i < correctlabels.size(); i++) {
         int prediction = classifications_[i];
         int actual = correctlabels[i];
         confusionmatrix_[prediction][actual]++;
@@ -150,7 +152,7 @@ void Classifier::FillMatrixWithTotals(std::vector<int> correctlabels) {
 
 void Classifier::ConvertMatrixTotalsToProbs() {
     // calculating sums of each row in matrix
-    std::vector<int> rowsums (model_.GetNumClasses());
+    std::vector<int> rowsums(model_.GetNumClasses());
     for (size_t i = 0; i < confusionmatrix_.size(); i++) {
         int sum = 0;
         for (size_t j = 0; j < confusionmatrix_[i].size(); j++) {
