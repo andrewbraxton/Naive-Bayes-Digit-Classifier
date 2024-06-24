@@ -2,6 +2,7 @@ digitdata/
 models/*
 !models/modeltest.txt
 .vscode
+compile_commands.json
 
 # Created by https://www.gitignore.io/api/c++,xcode,visualstudio,openframeworks,visualstudiocode,openframeworks+visualstudio
 # Edit at https://www.gitignore.io/?templates=c++,xcode,visualstudio,openframeworks,visualstudiocode,openframeworks+visualstudio
