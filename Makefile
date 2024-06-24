@@ -27,6 +27,12 @@ clean:
 	@echo 'Removed obj/ and bin/'
 .PHONY: all clean
 
+format:
+	@clang-format -i $(shell find . -name '*.h' -o -name '*.cc')
+tidy:
+	@clang-tidy --fix $(shell find . -name '*.h' -o -name '*.cc')
+.PHONY: format tidy
+
 classify: $(CLASSIFY)
 modelmaker: $(MODELMAKER)
 test: $(TEST)
