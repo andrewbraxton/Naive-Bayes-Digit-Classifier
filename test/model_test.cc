@@ -7,7 +7,7 @@
 
 TEST_CASE("can train models from files") {
     Model m;
-    m.Train("../models/modeltest.txt");
+    m.Train("models/modeltest.txt");
 
     SECTION("prior probabilities are stored") {
         for (int i = 0; i <= 9; i++) {
